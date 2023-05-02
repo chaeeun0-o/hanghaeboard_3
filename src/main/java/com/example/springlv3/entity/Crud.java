@@ -17,17 +17,14 @@ public class Crud extends Timestamped{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "crudId")
-    //pirvate -> controller에 못씀 : method -> Getter
     private Long id;
-    //private이기 때문에 controller에서 못쓰니까 method -> Getter
+
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
     private String content;
-    //외래키
-//    @OneToMany(mappedBy = "crud")
-//    private List<Comment> comment;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users users;
@@ -46,9 +43,7 @@ public class Crud extends Timestamped{
         this.content = requestDto.getContent();
     }
 
-    public void addUser(Users users){
-        this.users = users;
-    }
+   // public void addUser(Users users){this.users = users;}
 
 }
 

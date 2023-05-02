@@ -12,8 +12,11 @@ public enum StatusEnum {
     // 400
     BAD_REQUEST(HttpStatus.BAD_REQUEST, "BAD_REQUEST"),
     TOKEN_ERROR(HttpStatus.BAD_REQUEST, "토큰 에러"),
+    DUPLICATE_USER(HttpStatus.BAD_REQUEST, "중복된 username 입니다."),
+    NON_ADMIN(HttpStatus.BAD_REQUEST, "관리자 권한이 없습니다."),
     // 404
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자가 없습니다"),
+    NOT_PASSWORD(HttpStatus.NOT_FOUND, "비밀번호가 일치하지 않습니다"),
     NOT_AUTHENTICATION(HttpStatus.NOT_FOUND, "사용자만 게시글을 삭제할 수 있습니다."),
     NOT_EXIST_CRUD(HttpStatus.NOT_FOUND, "글이 존재하지 않습니다."),
     NOT_EXIST_COMMENT(HttpStatus.NOT_FOUND, "댓글이 존재하지 않습니다."),

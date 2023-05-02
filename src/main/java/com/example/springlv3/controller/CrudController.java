@@ -1,21 +1,16 @@
 package com.example.springlv3.controller;
-import com.example.springlv3.dto.CrudAndComment;
 import com.example.springlv3.dto.CrudRequestDto;
 import com.example.springlv3.dto.CrudResponseDto;
-import com.example.springlv3.dto.MsgResponseDto;
-import com.example.springlv3.entity.UserRoleEnum;
+import com.example.springlv3.dto.StatusDto;
+import com.example.springlv3.security.UserDetailsImpl;
 import com.example.springlv3.service.CrudService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.security.Key;
-import java.util.Base64;
-import java.util.Date;
+
 @RestController
 @RequiredArgsConstructor
 //클라이언츠의 요청을 하나씩 연결해줌
@@ -26,36 +21,36 @@ public class CrudController {
 
     //글 생성하기
     @PostMapping("/post")
-    public CrudResponseDto createCrud(@RequestBody CrudRequestDto requestDto, HttpServletRequest request) {
-        //브라우저에서 요청해온 데이터를 잘 불러와서 서비스에 던져줌
-        return crudService.createCrud(requestDto, request);
+    public StatusDto createCrud(@RequestBody CrudRequestDto requestDto,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return crudService.createCrud(requestDto, userDetails.getUser());
     }
 
-    //메인 페이지
+    //전체 조회
     @GetMapping("/posts")
     public List<CrudResponseDto> list(){
         return crudService.getCrudList();
     }
 
-    //전체목록 말고 하나씩 보기
+    // 선태 조회
     @GetMapping("/post/{id}")
-    public CrudResponseDto getCrud(@PathVariable Long id) {
-        return crudService.getCrud(id);
+    public CrudResponseDto getCrud(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return crudService.getCrud(id, userDetails.getUser());
     }
 
 
     //수정하기
     @PutMapping("/post/{id}")
-    public ResponseEntity updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto, HttpServletRequest request) {
-        return crudService.updateCrud(id,requestDto,request);
+    public StatusDto updateCrud(@PathVariable Long id, @RequestBody CrudRequestDto requestDto,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return crudService.updateCrud(id,requestDto, userDetails.getUser());
     }
 
     //삭제
     @DeleteMapping("/post/{id}")
-    public ResponseEntity deleteCrud(@PathVariable Long id, HttpServletRequest request) {
-        return crudService.deleteCrud(id,request);
+    public StatusDto deleteCrud(@PathVariable Long id,
+                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return crudService.deleteCrud(id, userDetails.getUser());
 
     }
-
-
 }

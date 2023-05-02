@@ -2,75 +2,81 @@ package com.example.springlv3.service;
 
 import com.example.springlv3.dto.LoginRequestDto;
 import com.example.springlv3.dto.SignupRequestDto;
+import com.example.springlv3.dto.StatusDto;
+import com.example.springlv3.entity.StatusEnum;
 import com.example.springlv3.entity.Users;
 import com.example.springlv3.entity.UserRoleEnum;
+import com.example.springlv3.exception.CustomException;
 import com.example.springlv3.jwt.JwtUtil;
 import com.example.springlv3.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 import java.lang.*;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    // ADMIN_TOKEN
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
+    //회원가입
     @Transactional
-    public void signup(SignupRequestDto signupRequestDto) {
+    public StatusDto signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
-        String password = signupRequestDto.getPassword();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
+
         // 회원 중복 확인
         Optional<Users> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
-            throw new IllegalArgumentException("아이디가 이미 존재합니다.");
+            throw new CustomException(StatusEnum.DUPLICATE_USER);
         }
 
         //사용자 Role 확인
-        UserRoleEnum role = UserRoleEnum.USER;
-        if(signupRequestDto.isAdmin()){
-            if(!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)){
-                throw new IllegalArgumentException("관리자 권한이 일치하지 않습니다.");
+        UserRoleEnum roleEum = UserRoleEnum.USER;
+        if (signupRequestDto.isAdmin()) {
+            if (!signupRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
+                throw new CustomException(StatusEnum.NON_ADMIN);
             }
-            role = UserRoleEnum.ADMIN;
+            roleEum = UserRoleEnum.ADMIN;
         }
-
-        //아이디 정규식 확인
-        if (!Pattern.matches("^[a-z0-9]{4,10}$", username)) {
-            throw new IllegalArgumentException("아이디는 4자 이상, 10자 이하 알파벳 소문자, 숫자로만 이루어져야 합니다.");
-        }
-        //비밀번호 정규식 확인
-        Optional<Users> pw = userRepository.findByUsername(password);
-        if (!Pattern.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[$@$!%*?&])[A-Za-z\\d$@$!%*?&]{8,15}", password)) {
-
-            throw new IllegalArgumentException("비밀번호는 8자 이상, 15자 이하 알파벳 대/소문자, 숫자, 특수문자 로만 이루어져야 합니다.");
-        }
-        Users users = new Users(username, password, role);
+        Users users = new Users(username, password, roleEum);
         userRepository.save(users);
+
+        return StatusDto.setSuccess(HttpStatus.OK.value(), "회원가입 완료", null);
     }
 
+    //로그인
     @Transactional(readOnly = true)
-    public void login(LoginRequestDto loginRequestDto,HttpServletResponse response) {
+    public StatusDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
-        // 사용자 확인
+        // 유저 아이디 확인
         Users users = userRepository.findByUsername(username).orElseThrow(
-                () -> new IllegalArgumentException("등록된 아이디가 없습니다.")
-        );
+                () -> new CustomException(StatusEnum.USER_NOT_FOUND));
 
         // 비밀번호 확인
-        if(!users.getPassword().equals(password)){
-            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        if (!passwordEncoder.matches(password, users.getPassword())) {
+            throw new CustomException(StatusEnum.NOT_PASSWORD);
         }
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(users.getUsername()));
+
+        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(users.getUsername(), users.getRole()));
+
+
+        if (users.getRole().equals(UserRoleEnum.ADMIN)) {
+            return StatusDto.setSuccess(HttpStatus.OK.value(),"관리자 로그인 완료", null);
+        }
+        return StatusDto.setSuccess(HttpStatus.OK.value(), "사용자 로그인 완료", null);
     }
 }
+
+

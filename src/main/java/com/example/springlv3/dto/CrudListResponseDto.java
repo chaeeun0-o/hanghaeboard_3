@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.*;
 
 @Getter
-public class CrudListResponseDto extends MsgResponseDto{
+public class CrudListResponseDto extends SecurityExceptionDto {
     List<CommentResponseDto> crudList = new ArrayList<>();
 
     public CrudListResponseDto(String msg, int statusCode){

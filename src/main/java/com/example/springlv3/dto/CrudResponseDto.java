@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-public class CrudResponseDto implements CrudAndComment{
+public class CrudResponseDto {
     private Long id;
     private String title;
     private String username;
@@ -20,7 +20,6 @@ public class CrudResponseDto implements CrudAndComment{
     private List<Comment> commentList;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
-
 
     public CrudResponseDto(Crud crud) {
         this.id = crud.getId();

@@ -14,11 +14,11 @@ public class StatusDto<T> {
     private T data;
 
     public static <T> StatusDto<T> setSuccess(int statusCode, String message, T data){
-        return StatusDto.add(statusCode, message, data);
+        return new StatusDto<>(statusCode, message, data);
     }
 
     public static <T> StatusDto<T> setFail(int statusCode, String message){
-        return StatusDto.add(statusCode, message, null);
+        return new StatusDto<>(statusCode, message, null);
     }
 
 }

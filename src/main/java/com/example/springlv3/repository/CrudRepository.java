@@ -12,6 +12,5 @@ import java.util.Optional;
 //spring data JPA
 public interface CrudRepository extends JpaRepository<Crud, Long> {
     //내림차순 정렬
-    Collection<Crud> findAllByOrderByModifiedAtDesc();
     List<Crud> findAllByOrderByCreatedAtDesc();
 }

@@ -13,10 +13,4 @@ import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-//    List<Comment> findByCrud(Crud crud);
-//    Optional<Comment> findByUserAndCrud(Users users, Crud crud);
-
-        List<Comment> findByCrud_IdOrderByModifiedAtDesc(Long id);
-
-        List<Comment> findAllByOrderByCreatedAtDesc();
 }

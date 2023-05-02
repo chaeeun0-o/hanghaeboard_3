@@ -11,9 +11,13 @@ import lombok.*;
 @NoArgsConstructor
 //해당 클래스에 자동으로 빌더추가
 @Builder
-public class MsgResponseDto {
+public class SecurityExceptionDto {
     private String msg;
     private int statusCode;
 
+    public SecurityExceptionDto(int statusCode, String msg) {
+        this.statusCode = statusCode;
+        this.msg = msg;
+    }
 
 }

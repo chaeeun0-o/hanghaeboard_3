@@ -17,5 +17,4 @@ public class GlobalExceptionHandler {
                 .status(e.getStatusEnum().getStatus().value())
                 .body(new ErrorResponseDto(e.getStatusEnum()));
     }
-
 }
