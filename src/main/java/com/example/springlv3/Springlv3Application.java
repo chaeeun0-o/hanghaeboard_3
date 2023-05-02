@@ -9,9 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class Springlv3Application {
 
     public static void main(String[] args) {
+
         SpringApplication.run(Springlv3Application.class, args);
     }
-
-
-
 }

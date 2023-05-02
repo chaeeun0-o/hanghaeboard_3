@@ -24,7 +24,7 @@ public class CommentController {
 
     //댓글 작성
     @PostMapping("/comment/{crudId}")
-    public StatusDto createComment(@PathVariable(name = "crudId")Long crudId, @RequestBody CommentRequestDto requestDto,
+    public StatusDto createComment(@PathVariable Long crudId, @RequestBody CommentRequestDto requestDto,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.createComment(crudId, requestDto, userDetails.getUser());
     }
@@ -32,7 +32,7 @@ public class CommentController {
     //댓글 수정
 
     @PutMapping("/comment/{commentId}")
-    public StatusDto updateComment(@PathVariable(name = "commentId") Long commentId, @RequestBody CommentRequestDto requestDto,
+    public StatusDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.updateComment(commentId, requestDto, userDetails.getUser());
     }
@@ -40,7 +40,7 @@ public class CommentController {
     //댓글 삭제
 
     @DeleteMapping("/comment/{commentId}")
-    public StatusDto deleteComment(@PathVariable(name = "commentId") Long commentId,
+    public StatusDto deleteComment(@PathVariable Long commentId,
                                    @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return commentService.deleteComment(commentId, userDetails.getUser());
     }

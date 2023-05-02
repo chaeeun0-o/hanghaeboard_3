@@ -32,7 +32,7 @@ public class CommentService {
         //게시글 존재 확인
        // Crud crud = checkCrud(requestDto.getCrudId());
         Crud crud = checkCrud(CrudId);
-        Comment comment = new Comment(requestDto, users);
+        Comment comment = new Comment(requestDto, users, crud);
 
         commentRepository.save(comment);
         return StatusDto.setSuccess(HttpStatus.OK.value(),"댓글 등록 완료", comment);

@@ -29,9 +29,9 @@ public class Crud extends Timestamped{
     @JoinColumn(name = "userId", nullable = false)
     private Users users;
 
-    @OneToMany(mappedBy = "crud", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "crud", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY) //fetch지연로딩(LAZY), 즉시로딩(EAGER)
     @OrderBy("createdAt desc")
-   // @JsonManagedReference
+    @JsonManagedReference
     private List<Comment> commentList = new ArrayList<>();
 
     public Crud(CrudRequestDto requestDto, Users users)  {
