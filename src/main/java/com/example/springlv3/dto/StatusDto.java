@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor(staticName = "add")
+@AllArgsConstructor //(staticName = "add")
 public class StatusDto<T> {
 
     private int statusCode; // 필드명을 statusCode로 변경

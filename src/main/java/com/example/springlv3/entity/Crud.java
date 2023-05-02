@@ -32,11 +32,12 @@ public class Crud extends Timestamped{
     @OneToMany(mappedBy = "crud", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("createdAt desc")
    // @JsonManagedReference
-    private List<Comment> commentList;
+    private List<Comment> commentList = new ArrayList<>();
 
-    public Crud(CrudRequestDto requestDto)  {
+    public Crud(CrudRequestDto requestDto, Users users)  {
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
+        this.users = users;
     }
     public void update(CrudRequestDto requestDto) {
         this.title = requestDto.getTitle();
