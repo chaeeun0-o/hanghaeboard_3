@@ -33,9 +33,9 @@ public class CommentService {
        // Crud crud = checkCrud(requestDto.getCrudId());
         Crud crud = checkCrud(CrudId);
         Comment comment = new Comment(requestDto, users, crud);
-
         commentRepository.save(comment);
-        return StatusDto.setSuccess(HttpStatus.OK.value(),"댓글 등록 완료", comment);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        return StatusDto.setSuccess(HttpStatus.OK.value(),"댓글 등록 완료", commentResponseDto);
     }
 
     //수정
@@ -45,7 +45,8 @@ public class CommentService {
         Comment comment = checkComment(commentId);
         isCommentUsers(users, comment);
         comment.update(requestDto);
-        return StatusDto.setSuccess(HttpStatus.OK.value(), "수정 성공", null);
+        CommentResponseDto commentResponseDto = new CommentResponseDto(comment);
+        return StatusDto.setSuccess(HttpStatus.OK.value(), "수정 성공", commentResponseDto);
     }
 
     //삭제

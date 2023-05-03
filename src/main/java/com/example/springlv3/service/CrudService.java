@@ -33,7 +33,8 @@ public class CrudService {
     public StatusDto createCrud(CrudRequestDto requestDto, Users users) {
         Crud crud = new Crud(requestDto, users);
         crudRepository.save(crud);
-        return StatusDto.setSuccess(HttpStatus.OK.value(),"게시글 등록 완료", crud);
+        CrudResponseDto crudResponseDto = new CrudResponseDto(crud);
+        return StatusDto.setSuccess(HttpStatus.OK.value(),"게시글 등록 완료", crudResponseDto);
     }
 
     //전체조회
@@ -58,9 +59,9 @@ public class CrudService {
         Crud crud = checkCrud(id);
         // 권한 체크
         isCrudUsers(users, crud);
-
         crud.update(requestDto);
-        return StatusDto.setSuccess(HttpStatus.OK.value(), "수정 성공", null);
+        CrudResponseDto crudResponseDto = new CrudResponseDto(crud);
+        return StatusDto.setSuccess(HttpStatus.OK.value(), "수정 성공", crudResponseDto);
     }
 
     //삭제
