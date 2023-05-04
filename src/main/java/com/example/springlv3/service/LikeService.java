@@ -22,7 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
 
-    private final Utils utils;
+//    private final Utils utils;
     private final CommentLikeRepository commentLikeRepository;
     private final CrudLikeRepository crudLikeRepository;
     private final CommentRepository commentRepository;
@@ -33,8 +33,8 @@ public class LikeService {
     public StatusDto crudlike(Long crudId, Users users){
         Crud crud = checkCrud(crudId); //게시글 체크
 
-        if(CrudLikeCheck(users,crud)){//좋아요가 있으면 DB에서 삭제, 없으면 생성
-            crudLikeRepository.deleteByUserIdAndCrudId(users.getId(), crudId);
+        if(CrudLikeCheck(users,crud)){//좋아요가 있으면 삭제, 없으면 생성
+            crudLikeRepository.deleteByUsersIdAndCrudId(users.getId(), crudId);
         } else{
             CrudLike crudLike = new CrudLike(crud, users);
             crudLikeRepository.save(crudLike);
@@ -42,7 +42,7 @@ public class LikeService {
         }
         long crudLikeCount = crudLikeRepository.countByCrudId(crud.getId());
         crud.crudLike(crudLikeCount);
-       crudRepository.save(crud);
+        crudRepository.save(crud);
         return StatusDto.setSuccess(HttpStatus.OK.value(), "게시글 좋아요 추가", crudLikeCount);
     }
 
@@ -84,7 +84,7 @@ public class LikeService {
 
     // 게시글 좋아요 여부 확인
     private boolean CrudLikeCheck(Users users, Crud crud){
-        Optional<CrudLike> like = crudLikeRepository.findByUserIdAndCrudId(users.getId(), crud.getId());
+        Optional<CrudLike> like = crudLikeRepository.findByUsersAndCrud(users.getId(), crud.getId());
         if(like.isPresent()){
             return true;
         }
@@ -93,7 +93,7 @@ public class LikeService {
 
     //댓글 좋아요 여부 확인
     protected boolean commentLikeCheck(Users users, Comment comment) {
-        Optional<CommentLike> like = commentLikeRepository.findByUserIdAndCommentId(users, comment);
+        Optional<CommentLike> like = commentLikeRepository.findByUsersAndComment(users, comment);
         if (like.isPresent()) {
             return true;
         }

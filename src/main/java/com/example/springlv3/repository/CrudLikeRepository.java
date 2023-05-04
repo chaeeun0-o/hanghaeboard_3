@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Repository
 public interface CrudLikeRepository extends JpaRepository<CrudLike, Long> {
-    Optional<CrudLike> findByUserIdAndCrudId(Long userId, Long crudId); //좋아요 확인용
-    void deleteByUserIdAndCrudId(Long userId, Long crudId); //좋아요 취소
+    Optional<CrudLike> findByUsersAndCrud(Long userId, Long crudId); //좋아요 확인용
+    void deleteByUsersIdAndCrudId(Long userId, Long crudId); //좋아요 취소
     long countByCrudId(Long crudId); //좋아요 갯수 카운트
 }
