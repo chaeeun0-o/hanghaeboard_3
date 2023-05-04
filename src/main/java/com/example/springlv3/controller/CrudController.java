@@ -1,19 +1,18 @@
 package com.example.springlv3.controller;
+
 import com.example.springlv3.dto.CrudRequestDto;
 import com.example.springlv3.dto.CrudResponseDto;
 import com.example.springlv3.dto.StatusDto;
 import com.example.springlv3.security.UserDetailsImpl;
 import com.example.springlv3.service.CrudService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
+
 
 @RestController
 @RequiredArgsConstructor
-//클라이언츠의 요청을 하나씩 연결해줌
 @RequestMapping("/api")
 public class CrudController {
 

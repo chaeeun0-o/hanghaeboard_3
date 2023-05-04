@@ -1,5 +1,6 @@
 package com.example.springlv3.config;
 
+import antlr.Utils;
 import com.example.springlv3.jwt.JwtAuthFilter;
 import com.example.springlv3.jwt.JwtUtil;
 import com.example.springlv3.security.UserDetailsServiceImpl;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;

@@ -3,8 +3,10 @@ package com.example.springlv3.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 
 @Data
+@Getter
 @AllArgsConstructor //(staticName = "add")
 public class StatusDto<T> {
 

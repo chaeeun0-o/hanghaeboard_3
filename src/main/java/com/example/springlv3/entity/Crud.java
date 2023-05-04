@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.catalina.User;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Table
 @NoArgsConstructor
 public class Crud extends Timestamped{
     @Id
@@ -24,6 +26,10 @@ public class Crud extends Timestamped{
 
     @Column(nullable = false)
     private String content;
+
+    @Column(nullable = false)
+    @ColumnDefault("0")
+    private long likeCount;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -44,7 +50,9 @@ public class Crud extends Timestamped{
         this.content = requestDto.getContent();
     }
 
-   // public void addUser(Users users){this.users = users;}
+    public void crudLike(long crudLikeCount) {
+        this.likeCount = crudLikeCount;
+    }
 
 }
 
