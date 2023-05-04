@@ -50,8 +50,12 @@ public class Crud extends Timestamped{
         this.content = requestDto.getContent();
     }
 
-    public void crudLike(long crudLikeCount) {
-        this.likeCount = crudLikeCount;
+    public void crudLike () {
+        ++likeCount;
+    }
+    public void minusLike()
+    {
+        --likeCount;
     }
 
 }

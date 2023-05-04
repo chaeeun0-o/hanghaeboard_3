@@ -28,7 +28,7 @@ public class Comment extends Timestamped {
 
     @Column(nullable = false)
     @ColumnDefault("0")
-    private long likeCount;
+    private int likeCount;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
@@ -55,7 +55,12 @@ public class Comment extends Timestamped {
         this.users = users;
     }
 
-    public void commentLike (long commentLikeCount) {
-        this.likeCount = commentLikeCount;
+    public void commentLike () {
+        ++likeCount;
     }
+    public void minusLike()
+    {
+        --likeCount;
+    }
+
 }

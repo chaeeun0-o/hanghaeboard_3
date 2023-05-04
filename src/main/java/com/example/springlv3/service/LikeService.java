@@ -34,16 +34,17 @@ public class LikeService {
         Crud crud = checkCrud(crudId); //게시글 체크
 
         if(CrudLikeCheck(users,crud)){//좋아요가 있으면 삭제, 없으면 생성
+            CrudLike crudLike = new CrudLike(crud, users);
             crudLikeRepository.deleteByUsersIdAndCrudId(users.getId(), crudId);
+            crud.minusLike();
+            return StatusDto.setSuccess(HttpStatus.OK.value(), "게시글 좋아요 취소", crud.getLikeCount());
         } else{
             CrudLike crudLike = new CrudLike(crud, users);
             crudLikeRepository.save(crudLike);
-            return StatusDto.setSuccess(HttpStatus.OK.value(), "게시글 좋아요 성공", crudLike);
+            crud.crudLike();
+            return StatusDto.setSuccess(HttpStatus.OK.value(), "게시글 좋아요 성공", crud.getLikeCount());
         }
-        long crudLikeCount = crudLikeRepository.countByCrudId(crud.getId());
-        crud.crudLike(crudLikeCount);
-        crudRepository.save(crud);
-        return StatusDto.setSuccess(HttpStatus.OK.value(), "게시글 좋아요 추가", crudLikeCount);
+
     }
 
     //댓글 좋아요
@@ -51,18 +52,17 @@ public class LikeService {
     public StatusDto commentlike(Long commentId, Users users) {
         Comment comment = checkComment(commentId); //댓글확인
 
-
-        if(commentLikeCheck(users, comment))  {//좋아요가 있으면  삭제, 없으면 생성
+        if(commentLikeCheck(users, comment)){//좋아요가 있으면  삭제, 없으면 생성
+            CommentLike commentLikes = new CommentLike(comment, users);
             commentLikeRepository.deleteByUsersIdAndCommentId(users.getId(), commentId);
+            comment.minusLike();
+            return StatusDto.setSuccess(HttpStatus.OK.value(), "댓글 좋아요 삭제 성공", comment.getLikeCount());
         } else {
             CommentLike commentLikes = new CommentLike(comment, users);
             commentLikeRepository.save(commentLikes);
-            return StatusDto.setSuccess(HttpStatus.OK.value(), "댓글 좋아요 성공", commentLikes);
+            comment.commentLike();
+            return StatusDto.setSuccess(HttpStatus.OK.value(), "댓글 좋아요 성공", comment.getLikeCount());
         }
-        long commentLikeCount  = commentLikeRepository.countByCommentId(commentId);
-        comment.commentLike(commentLikeCount );
-        commentRepository.save(comment);
-        return StatusDto.setSuccess(HttpStatus.OK.value(), "댓글 좋아요 추가", commentLikeCount );
     }
 
     //글 존재 여부 확인
@@ -83,8 +83,8 @@ public class LikeService {
     }
 
     // 게시글 좋아요 여부 확인
-    private boolean CrudLikeCheck(Users users, Crud crud){
-        Optional<CrudLike> like = crudLikeRepository.findByUsersAndCrud(users.getId(), crud.getId());
+    public boolean CrudLikeCheck(Users users, Crud crud){
+        Optional<CrudLike> like = crudLikeRepository.findByUsersAndCrud(users, crud);
         if(like.isPresent()){
             return true;
         }
@@ -92,7 +92,7 @@ public class LikeService {
     }
 
     //댓글 좋아요 여부 확인
-    protected boolean commentLikeCheck(Users users, Comment comment) {
+    public boolean commentLikeCheck(Users users, Comment comment) {
         Optional<CommentLike> like = commentLikeRepository.findByUsersAndComment(users, comment);
         if (like.isPresent()) {
             return true;

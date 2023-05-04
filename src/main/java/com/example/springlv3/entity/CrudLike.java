@@ -21,12 +21,12 @@ public class CrudLike {
 
     @ManyToOne
     @JoinColumn(name = "crudId", nullable = false)
-    @JsonManagedReference
+    //@JsonManagedReference
     private Crud crud;
 
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
-    @JsonManagedReference
+    //@JsonManagedReference
     private Users users;
 
     public CrudLike (Crud crud, Users users){
