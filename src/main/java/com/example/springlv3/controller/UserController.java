@@ -13,15 +13,13 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
-//@RestController
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/user")
 
 public class UserController {
 
     private final UserService userService;
-    @ResponseBody
     @PostMapping("/signup")
     public StatusDto signup(@RequestBody @Valid SignupRequestDto signupRequestDto ) {
         return userService.signup(signupRequestDto);
