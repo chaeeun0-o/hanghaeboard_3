@@ -23,7 +23,7 @@ public class CommentLike {
 
     @ManyToOne
     @JsonManagedReference
-    @JoinColumn(name = "CrudId")
+    @JoinColumn(name = "crudId")
     private Crud crud;
 
     @JsonBackReference // 순환참조 방지

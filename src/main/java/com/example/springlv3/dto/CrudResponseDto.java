@@ -17,6 +17,7 @@ public class CrudResponseDto {
     private String username;
     private UserRoleEnum role;
     private String content;
+    private long likeCount;
     private List<Comment> commentList;
     private LocalDateTime createAt;
     private LocalDateTime modifiedAt;
@@ -27,6 +28,7 @@ public class CrudResponseDto {
         this.username = crud.getUsers().getUsername();
         this.role = crud.getUsers().getRole();
         this.content = crud.getContent();
+        this.likeCount = crud.getLikeCount();
         this.commentList = crud.getCommentList();
         this.createAt = crud.getCreatedAt();
         this.modifiedAt = crud.getModifiedAt();

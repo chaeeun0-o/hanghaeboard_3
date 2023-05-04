@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
-    Optional<CommentLike> findByUserIdAndCommentId(Users users, Comment comment); //좋아요 확인
-    void deleteByUserIdAndCommentId(Long userId, Long commentId); //좋아요 취소
+    Optional<CommentLike> findByUsersAndComment(Users users, Comment comment); //좋아요 확인
+    void deleteByUsersIdAndCommentId(Long userId, Long commentId); //좋아요 취소
     long countByCommentId(Long commentId); //좋아요 갯수 카운트
 }

@@ -19,7 +19,6 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 @Slf4j
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class LikeService {
 
@@ -52,8 +51,9 @@ public class LikeService {
     public StatusDto commentlike(Long commentId, Users users) {
         Comment comment = checkComment(commentId); //댓글확인
 
-        if(commentLikeCheck(users, comment))  {//좋아요가 있으면 DB에서 삭제, 없으면 생성
-            commentLikeRepository.deleteByUserIdAndCommentId(users.getId(), commentId);
+
+        if(commentLikeCheck(users, comment))  {//좋아요가 있으면  삭제, 없으면 생성
+            commentLikeRepository.deleteByUsersIdAndCommentId(users.getId(), commentId);
         } else {
             CommentLike commentLikes = new CommentLike(comment, users);
             commentLikeRepository.save(commentLikes);
@@ -73,12 +73,6 @@ public class LikeService {
         return crud;
     }
 
-    //게시글 권한 여부
-    private void isCrudUsers(Users users, Crud crud){
-        if(!crud.getUsers().getUsername().equals(users.getUsername()) && !users.getRole().equals(UserRoleEnum.ADMIN)){
-            throw new CustomException(StatusEnum.NOT_AUTHENTICATION);
-        }
-    }
 
     //댓글 존재 여부 확인
     private Comment checkComment(Long id){
@@ -86,12 +80,6 @@ public class LikeService {
                 () -> new CustomException(StatusEnum.NOT_EXIST_COMMENT)
         );
         return comment;
-    }
-    //댓글 권한 여부
-    private void isCommentUsers(Users users, Comment comment){
-        if(!comment.getUsers().getUsername().equals(users.getUsername()) && !users.getRole().equals(UserRoleEnum.ADMIN)){
-            throw new CustomException(StatusEnum.NOT_AUTHENTICATION);
-        }
     }
 
     // 게시글 좋아요 여부 확인

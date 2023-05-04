@@ -20,7 +20,7 @@ public class CrudLike {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "CrudId", nullable = false)
+    @JoinColumn(name = "crudId", nullable = false)
     @JsonManagedReference
     private Crud crud;
 

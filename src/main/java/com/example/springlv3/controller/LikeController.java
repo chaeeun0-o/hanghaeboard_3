@@ -19,13 +19,13 @@ public class LikeController{
 
 
     //게시글 좋아요
-    @PostMapping("/crud/like/crudId")
-        public StatusDto crudlike(@PathVariable (name = "crudId") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    @PutMapping ("/crud/like/{crud-id}")
+        public StatusDto crudlike(@PathVariable (name = "crud-id") Long id, @AuthenticationPrincipal UserDetailsImpl userDetails){
             return likeService.crudlike(id, userDetails.getUser());
         }
 
     //댓글 좋아요
-    @PostMapping("/comment/like/commentId")
+    @PutMapping("/comment/like/{commentId}")
     public StatusDto commentlike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likeService.commentlike(commentId, userDetails.getUser());
     }
